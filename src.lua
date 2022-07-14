@@ -1,4 +1,4 @@
-```lua
+
 --- Script-Ware Script Dumper by nul#3174 ---
 
 if not identifyexecutor then return end
@@ -54,4 +54,3 @@ end
 writefile(tostr(foldername.."'s Script Dump Output".."/"..v.Name..randomNumbers()..".lua"), tostr(out))
 
 end
-```
