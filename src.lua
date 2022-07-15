@@ -1,4 +1,3 @@
-
 --- Script-Ware Script Dumper by nul#3174 ---
 
 if not identifyexecutor then return end
