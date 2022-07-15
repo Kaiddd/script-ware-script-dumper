@@ -15,7 +15,6 @@ local mth = math
 local mth_random = mth.random
 local tsk = task
 local tsk_wait = tsk.wait
-local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductInfo(placeid).Name, "[^%w%s]", "")
 mth.randomseed(tick())
 
 local function decompile(a)
@@ -29,9 +28,10 @@ local function decompile(a)
 end
 
 local function randomNumbers()
-    runService.RenderStepped:Wait()
     return tostr(mth_random(1e9, 2e9))
 end
+
+local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductInfo(placeid).Name, "[^%w%s]", "") .. "'s Script Dump Output (" .. randomNumbers() .. ")"
 
 local scripts = {}
 local out
@@ -49,9 +49,9 @@ for i, v in next, scripts do
 
 	out = decompile(v)
 
-	if not folderexists(tostr(foldername.."'s Script Dump Output")) then
-		savefolderas(tostr(foldername.."'s Script Dump Output"))
+	if not folderexists(tostr(foldername)) then
+		savefolderas(tostr(foldername))
 	end
 
-	savefileas(tostr(foldername.."'s Script Dump Output".."/"..v.Name..randomNumbers()..".lua"), tostr(out))
+	savefileas(tostr(foldername.."/"..v.Name..randomNumbers()..".lua"), tostr(out))
 end
