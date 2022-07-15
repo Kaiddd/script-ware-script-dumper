@@ -4,8 +4,9 @@ if not identifyexecutor then return end
 
 if identifyexecutor and identifyexecutor() ~= "ScriptWare" then return end
 
-local newfolder = makefolder
-local newfile = writefile
+local savefolderas = makefolder
+local savefileas = writefile
+local folderexists = isfolder
 local tostr = tostring
 local disassem = disassemble
 local placeid = game.PlaceId
@@ -14,12 +15,15 @@ local tbl_insert = tbl.insert
 local mth = math
 local mth_random = mth.random
 local mth_randomseed = mth.randomseed
+local tsk = task
+local tsk_wait = tsk.wait
 local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductInfo(placeid).Name, "[^%w%s]", "")
 
 local function decompile(a)
     if a:IsA("ModuleScript") or a:IsA("LocalScript") then
-    task.wait(2)
+    tsk_wait(1.25)
         if pcall(function() tostr(disassem(a)) end) then
+        tsk_wait(0.75)
         return tostr(disassem(a))
         end
     end
@@ -44,12 +48,14 @@ end
 
 for i, v in next, scripts do
 
+game:GetService("RunService").RenderStepped:Wait()
+
 out = decompile(v)
 
-if not isfolder(tostr(foldername.."'s Script Dump Output")) then
-    makefolder(tostr(foldername.."'s Script Dump Output"))
+if not folderexists(tostr(foldername.."'s Script Dump Output")) then
+    savefolderas(tostr(foldername.."'s Script Dump Output"))
 end
 
-writefile(tostr(foldername.."'s Script Dump Output".."/"..v.Name..randomNumbers()..".lua"), tostr(out))
+savefileas(tostr(foldername.."'s Script Dump Output".."/"..v.Name..randomNumbers()..".lua"), tostr(out))
 
 end
