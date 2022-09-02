@@ -14,7 +14,9 @@ local tbl_insert = tbl.insert
 local mth = math
 local mth_random = mth.random
 local tsk = task
-local tsk_wait = tsk.wait
+local tsk_spawn = tsk.spawn
+local coro = coroutine
+local coro_wrap = coro.wrap
 mth.randomseed(tick())
 
 local function decompile(a)
@@ -34,7 +36,7 @@ local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductI
 local scripts = {}
 local out
 
-task.spawn(coroutine.wrap(function()
+tsk_spawn(coro_wrap(function()
 for i, v in getscripts() do
     if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestor("CoreGui") and not v:FindFirstAncestor("CorePackages") then
         if not v:FindFirstAncestor("Chat") and not v:FindFirstAncestor("PlayerModule") then
@@ -44,7 +46,7 @@ for i, v in getscripts() do
 end
 end))
 
-task.spawn(coroutine.wrap(function()
+tsk_spawn(coro_wrap(function()
 for i, v in scripts do
 	runService.RenderStepped:Wait()
 
