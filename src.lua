@@ -40,9 +40,7 @@ local out
 tsk_spawn(coro_wrap(function()
 for i, v in getscripts() do
     if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestor("CoreGui") and not v:FindFirstAncestor("CorePackages") then
-        if not v:FindFirstAncestor("Chat") and not v:FindFirstAncestor("PlayerModule") then
-            tbl_insert(scripts, v)
-        end
+        tbl_insert(scripts, v)
     end
 end
 end))
