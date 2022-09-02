@@ -19,9 +19,7 @@ mth.randomseed(tick())
 
 local function decompile(a)
     if a:IsA("ModuleScript") or a:IsA("LocalScript") then
-    tsk_wait(1.25)
         if pcall(function() tostr(disassem(a)) end) then
-        tsk_wait(0.75)
         return tostr(disassem(a))
         end
     end
@@ -36,15 +34,18 @@ local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductI
 local scripts = {}
 local out
 
-for i, v in next, getscripts() do
+task.spawn(coroutine.wrap(function()
+for i, v in getscripts() do
     if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestor("CoreGui") and not v:FindFirstAncestor("CorePackages") then
         if not v:FindFirstAncestor("Chat") and not v:FindFirstAncestor("PlayerModule") then
             tbl_insert(scripts, v)
         end
     end
 end
+end))
 
-for i, v in next, scripts do
+task.spawn(coroutine.wrap(function()
+for i, v in scripts do
 	runService.RenderStepped:Wait()
 
 	out = decompile(v)
@@ -55,3 +56,4 @@ for i, v in next, scripts do
 
 	savefileas(tostr(foldername.."/"..v.Name..randomNumbers()..".lua"), tostr(out))
 end
+end))
