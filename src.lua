@@ -15,15 +15,17 @@ local mth = math
 local mth_random = mth.random
 local tsk = task
 local tsk_spawn = tsk.spawn
+local tsk_wait = tsk.wait
 local coro = coroutine
 local coro_wrap = coro.wrap
 mth.randomseed(tick())
 
 local function decompile(a)
     if a:IsA("ModuleScript") or a:IsA("LocalScript") then
-	if pcall(function() tostr(disassem(a)) end) and tostr(disassem(a)) ~= nil then
-	tsk_wait(0.25)
+	if pcall(function() tostr(disassem(a)) end) then
+	if not tostr(disassem(a)) == "nil" and not tostr(disassem(a)) == nil and tostr(disassem(a)) then
         return tostr(disassem(a))
+        end
         end
     end
 end
@@ -37,15 +39,12 @@ local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductI
 local scripts = {}
 local out
 
-tsk_spawn(coro_wrap(function()
-for i, v in getscripts() do
-    if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestorOfClass("CoreGui") and not v:FindFirstAncestorOfClass("CorePackages") and not v:FindFirstAncestor("RobloxGui") then
+for i, v in getdescendants and getdescendants(game) and game:GetDescendants() do
+    if v:IsA("ModuleScript") or v:IsA("LocalScript") then
         tbl_insert(scripts, v)
     end
 end
-end))
 
-tsk_spawn(coro_wrap(function()
 for i, v in scripts do
 	runService.RenderStepped:Wait()
 
@@ -57,4 +56,3 @@ for i, v in scripts do
 
 	savefileas(tostr(foldername.."/"..v.Name..randomNumbers()..".lua"), tostr(out))
 end
-end))
