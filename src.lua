@@ -21,7 +21,8 @@ mth.randomseed(tick())
 
 local function decompile(a)
     if a:IsA("ModuleScript") or a:IsA("LocalScript") then
-        if pcall(function() tostr(disassem(a)) end) then
+	if pcall(function() tostr(disassem(a)) end) and tostr(disassem(a)) ~= nil then
+	tsk_wait(0.25)
         return tostr(disassem(a))
         end
     end
