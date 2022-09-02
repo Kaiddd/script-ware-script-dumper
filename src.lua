@@ -39,7 +39,7 @@ local out
 
 tsk_spawn(coro_wrap(function()
 for i, v in getscripts() do
-    if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestor("CoreGui") and not v:FindFirstAncestor("CorePackages") then
+    if v:IsA("ModuleScript") or v:IsA("LocalScript") and not v:FindFirstAncestorOfClass("CoreGui") and not v:FindFirstAncestorOfClass("CorePackages") and not v:FindFirstAncestor("RobloxGui") then
         tbl_insert(scripts, v)
     end
 end
