@@ -36,16 +36,11 @@ end
 
 local foldername = string.gsub(game:GetService("MarketplaceService"):GetProductInfo(placeid).Name, "[^%w%s]", "") .. "'s Script Dump Output (" .. randomNumbers() .. ")"
 
-local scripts = {}
+local scripts = getscripts()
 local out
 
-for i, v in getdescendants and getdescendants(game) and game:GetDescendants() do
-    if v:IsA("ModuleScript") or v:IsA("LocalScript") then
-        tbl_insert(scripts, v)
-    end
-end
-
 for i, v in scripts do
+	if not (v:IsA("LocalScript") or v:IsA("ModuleScript")) then continue end
 	runService.RenderStepped:Wait()
 
 	out = decompile(v)
